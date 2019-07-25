@@ -8,7 +8,7 @@ beforeEach(async () => {
 });
 
 describe("Auth Register User", () => {
-  test("[POST] /api/auth/register | register user", () => {
+  test("[POST] /api/auth/register | Register user returns details of registered user", () => {
     return request(server)
       .post("/api/auth/register")
       .send({
@@ -25,10 +25,25 @@ describe("Auth Register User", () => {
         expect(res.body).toHaveProperty("token");
       });
   });
+
+  test("[POST] /api/auth/register | Register user increments the database by 1 user", () => {
+    return request(server)
+      .post("/api/auth/register")
+      .send({
+        username: "Isaac",
+        password: "12345",
+        department: "Engineering"
+      })
+      .expect(201)
+      .then(async () => {
+        let users = await Controller.getUsers();
+        expect(users).toHaveLength(1);
+      });
+  });
 });
 
 describe("Auth Register User", () => {
-  test("[DELETE] /api/auth/:id | users db returns 0", () => {
+  test("[DELETE] /api/auth/:id | Users db returns 0 after delete user", () => {
     return request(server)
       .post("/api/auth/register")
       .send({
@@ -51,7 +66,7 @@ describe("Auth Register User", () => {
       });
   });
 
-  test("[DELETE] /api/auth/:id | delete user returns details of deleted user", () => {
+  test("[DELETE] /api/auth/:id | Delete user returns details of deleted user", () => {
     return request(server)
       .post("/api/auth/register")
       .send({
@@ -60,13 +75,13 @@ describe("Auth Register User", () => {
         department: "Engineering"
       })
       .expect(201)
-      .then( res => {
+      .then(res => {
         const { registeredUser } = res.body;
 
         return request(server)
           .delete(`/api/auth/${registeredUser.id}`)
           .expect(200)
-          .then((res) => {
+          .then(res => {
             const { username, department } = res.body;
             expect(username).toEqual("Isaac");
             expect(department).toEqual("Engineering");
