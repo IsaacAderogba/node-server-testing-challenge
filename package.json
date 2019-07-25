@@ -4,7 +4,8 @@
   "description": "Node Server Testing Challenge",
   "main": "server.js",
   "scripts": {
-    "test": "jest --watch"
+    "dev": "nodemon index.js",
+    "test": "jest --watch --verbose"
   },
   "jest": {
     "testEnvironment": "node"
@@ -33,6 +34,7 @@
     "helmet": "^3.20.0",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.19.1",
+    "nodemon": "^1.19.1",
     "sqlite3": "^4.0.9"
   }
 }
