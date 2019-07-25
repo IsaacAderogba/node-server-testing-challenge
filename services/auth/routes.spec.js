@@ -28,7 +28,7 @@ describe("Auth Register User", () => {
 });
 
 describe("Auth Register User", () => {
-  test("[DELETE] /api/auth/:id | delete user", () => {
+  test("[DELETE] /api/auth/:id | users db returns 0", () => {
     return request(server)
       .post("/api/auth/register")
       .send({
@@ -47,6 +47,29 @@ describe("Auth Register User", () => {
           .then(async () => {
             let users = await Controller.getUsers();
             expect(users).toHaveLength(0);
+          });
+      });
+  });
+
+  test("[DELETE] /api/auth/:id | delete user returns details of deleted user", () => {
+    return request(server)
+      .post("/api/auth/register")
+      .send({
+        username: "Isaac",
+        password: "12345",
+        department: "Engineering"
+      })
+      .expect(201)
+      .then( res => {
+        const { registeredUser } = res.body;
+
+        return request(server)
+          .delete(`/api/auth/${registeredUser.id}`)
+          .expect(200)
+          .then((res) => {
+            const { username, department } = res.body;
+            expect(username).toEqual("Isaac");
+            expect(department).toEqual("Engineering");
           });
       });
   });

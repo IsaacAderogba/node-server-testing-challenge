@@ -19,8 +19,8 @@ module.exports = {
       .insert(user)
       .then(([id]) => this.findUserById(id));
   },
-  removeUser: function(id) {
-    const userToDelete = this.findUserById(id);
+  removeUser: async function(id) {
+    const userToDelete = await this.findUserById(id);
     return db('users').where({id}).del().then(() => userToDelete);
   }
 };
