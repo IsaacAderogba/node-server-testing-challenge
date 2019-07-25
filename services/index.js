@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const router = require('express').Router();
 
 router.get('/api', (req, res, next) => {
@@ -6,7 +7,7 @@ router.get('/api', (req, res, next) => {
   } catch (err) {
     next(err);
   }
-})
+});
 
 router.use((err, req, res, next) => {
   res.status(500).json({ message: err.message, stack: err.stack });
