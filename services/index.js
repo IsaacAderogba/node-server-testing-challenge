@@ -10,7 +10,7 @@ router.get('/api', (req, res, next) => {
   }
 });
 
-// router.use('/api/auth', authService);
+router.use('/api/auth', authService);
 
 router.use((err, req, res, next) => {
   res.status(500).json({ message: err.message, stack: err.stack });
