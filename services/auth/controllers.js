@@ -12,5 +12,8 @@ module.exports = {
   },
   postUser: async function(user) {
     return await Auth.insertUser(user);
+  },
+  deleteUser: async function(id) {
+    return await Auth.removeUser(id);
   }
 };

@@ -21,4 +21,13 @@ router.post("/register", mdlware.validRegisterBody, async (req, res, next) => {
   }
 });
 
+router.delete("/:id", mdlware.validUserId, async (req, res, next) => {
+  try {
+    const deletedUser = await controller.deleteUser(req.params.id);
+    res.status(200).json(deletedUser);
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = router;

@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const Controller = require('./controllers');
 
 module.exports = {
   validRegisterBody: function(req, res, next) {
@@ -40,6 +41,27 @@ module.exports = {
       );
     } else {
       res.status(401).json({ message: "Authorization header not present" });
+    }
+  },
+  validUserId: async function(req, res, next) {
+    const { id } = req.params;
+    if (Number.isInteger(parseInt(id, 10))) {
+      try {
+        const user = await Controller.getUserById(id);
+        if (user) {
+          // eslint-disable-next-line require-atomic-updates
+          req.user = user;
+          next();
+        } else {
+          res
+            .status(404)
+            .json({ message: `The user with Id of '${id}' does not exist` });
+        }
+      } catch (err) {
+        next(err);
+      }
+    } else {
+      res.status(400).json({ message: `The Id of '${id}' is not valid` });
     }
   }
 };
